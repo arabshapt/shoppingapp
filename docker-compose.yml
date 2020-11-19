@@ -1,0 +1,18 @@
+version: "3"
+services:
+  shoppingapp:
+    build: .
+    container_name: shoppingapp
+    expose:
+      - "3000"
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    stdin_open: true
+    networks:
+      - shoppingapp
+
+networks:
+  shoppingapp:
+    driver: bridge
