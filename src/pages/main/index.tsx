@@ -19,11 +19,10 @@ import { signInWithGoogle } from "../../firebase";
 const MainPage = () => {
   const user = useContext(UserContext);
   const [redirect, setredirect] = useState<string | null>(null);
-console.log(user);
 
   useEffect(() => {
     if (!user) {
-      setredirect("/");
+      setredirect("/login");
     }
   }, [user]);
   if (redirect) {

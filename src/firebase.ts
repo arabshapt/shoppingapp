@@ -1,11 +1,15 @@
 import * as dotenv from "dotenv";
 import "firebase/auth";
 import firebase from "firebase/app";
-// Add the Firebase services that you want to use
-
 dotenv.config();
 
-firebase.initializeApp({
+export const firebaseUIConfig = {
+  signInFlow: "popup",
+  signInSuccessUrl: "/",
+  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+};
+
+export const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_DATABASE_URL,
@@ -14,7 +18,9 @@ firebase.initializeApp({
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
-});
+};
+
+firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();

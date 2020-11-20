@@ -22,17 +22,13 @@ import {
   Button,
   TextField,
   CircularProgress,
-  Backdrop,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import LoginPage from "./pages/login";
-import Main from "./pages/main";
 import { UserContext } from "./userProvider";
 import { logOut } from "./firebase";
-import { Skeleton } from "@material-ui/lab";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { isEmpty } from "lodash";
@@ -155,15 +151,7 @@ const App = () => {
       .required("required"),
   });
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    watch,
-    control,
-    errors,
-  } = useForm({
+  const { register, handleSubmit, getValues, errors } = useForm({
     mode: "onChange",
     resolver: yupResolver(validationSchema), // yup, joi and even your own.
   });
@@ -184,16 +172,6 @@ const App = () => {
     carbs: 0,
     protein: 0,
   });
-  const [rows, setRows] = useState<
-    {
-      name: string;
-      amount: number;
-      calories?: number;
-      fat?: number;
-      carbs?: number;
-      protein?: number;
-    }[]
-  >([]);
 
   const { loading, error, data } = useQuery(ITEMS, {
     variables: { userId: user?.displayName },
@@ -215,23 +193,12 @@ const App = () => {
 
   useEffect(() => {
     if (!user) {
-      setredirect("/");
+      setredirect("/login");
     }
   }, [user]);
   if (redirect) {
     return <Redirect to={redirect} />;
   }
-
-  console.log(user);
-
-  const handleChange = (name: string) => (event: any) => {
-    setWishItem({
-      ...wishItem,
-      [name]:
-        name !== "name" ? parseInt(event.target.value, 10) : event.target.value,
-    });
-  };
-  console.log(getValues());
 
   const handleDelete = (id: string) => {
     // const copyOfRows = [...rows];
@@ -248,14 +215,7 @@ const App = () => {
   const handleEdit = (id: string) => {
     setMutationState("update");
     setWishItem({ ...data.items.find((item: ItemType) => item.id === id) });
-    const item: any = data.items.find((item: ItemType) => item.id === id);
-    // setValues({ ...data.items.find((item: ItemType) => item.id === id) })
     setModalVisible(true);
-    // for (const property in item) {
-    //   console.log(property, item[property]);
-
-    //   setValue(property, item[property]);
-    // }
   };
   const onSubmit = (data: any) => {
     console.log(data);
@@ -286,7 +246,6 @@ const App = () => {
             { query: ITEMS, variables: { userId: user?.displayName } },
           ],
         });
-    // setRows([...rows, { ...wishItem }]);
     setWishItem({
       name: "",
       amount: 1,
@@ -297,7 +256,6 @@ const App = () => {
     });
     setModalVisible(false);
   };
-  console.log(wishItem, data);
 
   const formatError = (errorMessage: string): string | React.ReactNode => {
     if (errorMessage) {
@@ -388,23 +346,6 @@ const App = () => {
       <Dialog open={isModalVisible} onClose={() => setModalVisible(false)}>
         <form onSubmit={handleSubmit((data: any) => onSubmit(data))} noValidate>
           <GroupFields>
-            {/* <Controller
-              defaultValue={mutationState === "update" ? wishItem.name : ""}
-              name="name"
-              id="name"
-              label="Name"
-              control={control}
-              // rules={{
-              //   required: true,
-              //   validate: (value: any): any => {
-              //     console.log(value);
-              //   },
-              // }}
-              // variant="outlined"
-              error={!!errors?.name?.type}
-              helperText={errors?.name?.message}
-              as={<TextFieldStyled />}
-            /> */}
             <TextFieldStyled
               inputRef={register}
               defaultValue={mutationState === "update" ? wishItem.name : ""}
@@ -418,24 +359,6 @@ const App = () => {
               helperText={errors?.name?.message}
               required
             />
-            {/* <Controller
-              defaultValue={mutationState === "update" ? wishItem.amount : 1}
-              name="amount"
-              id="amount"
-              type="number"
-              label="Amount"
-              control={control}
-              rules={{
-                required: true,
-                validate: (value: any): any => {
-                  console.log(value);
-                },
-              }}
-              error={!!errors?.amount?.type}
-              helperText={errors?.amount?.message}
-              // variant="outlined"
-              as={<TextFieldStyled />}
-            /> */}
             <TextFieldStyled
               inputRef={register}
               defaultValue={mutationState === "update" ? wishItem.amount : 1}
@@ -463,8 +386,6 @@ const App = () => {
               label="Calories"
               error={!!errors?.calories?.type}
               helperText={formatError(errors?.calories?.message)}
-              // value={wishItem.calories}
-              // onChange={handleChange("calories")}
               name={"calories"}
               margin="normal"
               required
@@ -475,8 +396,6 @@ const App = () => {
               id="fat"
               type="number"
               label="Fat"
-              // value={wishItem.fat}
-              // onChange={handleChange("fat")}
               error={!!errors?.fat?.type}
               helperText={errors?.fat?.message}
               name={"fat"}
@@ -489,8 +408,6 @@ const App = () => {
               id="carbs"
               type="number"
               label="Carbs"
-              // value={wishItem.carbs}
-              // onChange={handleChange("carbs")}
               error={!!errors?.carbs?.type}
               helperText={errors?.carbs?.message}
               name={"carbs"}
@@ -503,8 +420,6 @@ const App = () => {
               id="protein"
               type="number"
               label="Protein"
-              // value={wishItem.protein}
-              // onChange={handleChange("protein")}
               error={!!errors?.protein?.type}
               helperText={errors?.protein?.message}
               name={"protein"}
@@ -516,7 +431,6 @@ const App = () => {
             </SubmitButton>
           </GroupFields>
         </form>
-        {/* <Button onClick={() => setModalVisible(false)}>open modal</Button> */}
       </Dialog>
       <IconButton
         onClick={() => {
@@ -535,7 +449,6 @@ const App = () => {
       >
         {apolloLoading ? <CircularProgress size={20} /> : <AddIcon />}
       </IconButton>
-      {/* <Button onClick={() => setValue("name", "asdfasdfasd")}>test</Button> */}
     </Wrapper>
   );
 };

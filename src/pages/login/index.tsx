@@ -1,30 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
-import { signInWithGoogle } from "../../firebase";
+import { signInWithGoogle, auth, firebaseUIConfig } from "../../firebase";
 import { Redirect } from "react-router-dom";
 import { UserContext } from "../../userProvider";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 const LoginPage = () => {
   const user = useContext(UserContext);
   const [redirect, setredirect] = useState<string | null>(null);
-console.log(user);
+  console.log(user);
 
   useEffect(() => {
     if (user) {
-      setredirect("/mainpage");
+      setredirect("/");
     }
   }, [user]);
   if (redirect) {
     return <Redirect to={redirect} />;
   }
   return (
-    <div className="login-buttons">
-      <button className="login-provider-button" onClick={signInWithGoogle}>
-        <img
-          src="https://img.icons8.com/ios-filled/50/000000/google-logo.png"
-          alt="google icon"
-        />
-        <span> Continue with Google</span>
-      </button>
+    <div>
+      <StyledFirebaseAuth uiConfig={firebaseUIConfig} firebaseAuth={auth} />
     </div>
   );
 };
