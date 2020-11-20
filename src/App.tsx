@@ -467,6 +467,7 @@ const App = () => {
               // onChange={handleChange("calories")}
               name={"calories"}
               margin="normal"
+              required
             />
             <TextFieldStyled
               inputRef={register}
@@ -480,6 +481,7 @@ const App = () => {
               helperText={errors?.fat?.message}
               name={"fat"}
               margin="normal"
+              required
             />
             <TextFieldStyled
               inputRef={register}
@@ -493,6 +495,7 @@ const App = () => {
               helperText={errors?.carbs?.message}
               name={"carbs"}
               margin="normal"
+              required
             />
             <TextFieldStyled
               inputRef={register}
@@ -506,6 +509,7 @@ const App = () => {
               helperText={errors?.protein?.message}
               name={"protein"}
               margin="normal"
+              required
             />
             <SubmitButton disabled={!isEmpty(errors)} type={"submit"}>
               submit
