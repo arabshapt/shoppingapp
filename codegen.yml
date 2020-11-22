@@ -1,0 +1,12 @@
+overwrite: true
+schema: "http://127.0.0.1:5001/shoppingapp-b232f/us-central1/graphql"
+documents: "src/queries/*.ts"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"
