@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { MutationTuple } from "@apollo/client";
-import { Button, Dialog, TextField } from "@material-ui/core";
+import { Button, Dialog, TextField, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import {
   CreateItem,
@@ -26,6 +26,7 @@ const SubmitButton = styled(Button)`
 
 const GroupFields = styled.div`
   margin: 20px;
+  margin-top: 0px;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
@@ -35,9 +36,15 @@ const GroupFields = styled.div`
 `;
 
 const TextFieldStyled = styled(TextField)`
-marginLeft: theme.spacing.unit,
-marginRight: theme.spacing.unit,
-width: 200,
+  marginleft: theme.spacing.unit;
+  marginright: theme.spacing.unit;
+  width: 200;
+`;
+
+const TypographyStyled = styled(Typography)`
+  padding-top: 10px;
+  text-align: center;
+  margin-top: 10px !important;
 `;
 
 interface AddItemDialogProps {
@@ -120,6 +127,9 @@ const AddItemDialog = ({
 
   return (
     <Dialog open={isModalVisible} onClose={() => setModalVisible(false)}>
+      <TypographyStyled>
+        {mutationState === "create" ? "Create Item" : "Edit Item"}
+      </TypographyStyled>
       <form onSubmit={handleSubmit((data: any) => onSubmit(data))} noValidate>
         <GroupFields>
           <TextFieldStyled
