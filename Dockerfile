@@ -1,13 +1,7 @@
-FROM node:14 as web-build
-
-#Setting the working directory as /app
-WORKDIR /app
-
-#Copying package.json to Docker Image
-# COPY package.json /app
-
-#Installing all dependencies.
-RUN npm install
-
-# Running the dev server.
-CMD ["npm", "start"]
+FROM node:14.8.0 as web-build
+WORKDIR /usr/src/app
+COPY package.json yarn.lock ./
+RUN yarn
+COPY . ./
+RUN yarn build
+CMD ["yarn", "start"]
