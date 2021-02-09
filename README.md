@@ -6,8 +6,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `Docker`
 
-```docker-compose up``` or ```docker-compose up -d``` to run it in the background
-stop it with ```docker-compose down```
+```docker-compose up``` or ```docker-compose up -d``` to run it in the background.
+Stop it with ```docker-compose down```
 
 ## Available Scripts
 
